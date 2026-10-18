@@ -7,5 +7,5 @@ If it receives the payload "status" it will check the output of the ultrasonic s
 
 A NUC (small computer)running Ubuntu has a flask web page is used to send the mqtt payloads, update the web page with the door status and control access.
 
-
+The repository has just the flask code for the web page. You will have to setup the virtual environment and the wsgi environment to have it run on the server. AI is probably your friend with this.
 
