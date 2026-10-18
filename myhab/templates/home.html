@@ -1,0 +1,153 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+    <h1> home page  </h1>
+<p>Hi {{ current_user.username }}</p>
+
+<div class="container">
+          
+    <table class="table">
+
+      <tbody>
+        <tr>
+          <td>Get Garage Door Status</td>
+          
+          <td><input type="button" class="btn-primary check" id="check" value="get status"></td>
+        </tr>
+        <tr>
+          <td>Garage Door Status</td>
+        
+          <td id="garagestatus">unknown</td>
+        </tr>
+        <tr>
+            <td>Open/Close Garage Door</td>
+          
+            <td ><input type="button" class="btn-primary pressgarage" id="pressgarage" value="Open/Close"></td>
+          </tr>        
+      </tbody>
+    </table>
+  </div>
+
+<div class="container">
+    <h3> Ajax Response </h3><br>
+    <div id="res" class="res"> 
+    <!--<p id="res" class="res"></p> -->
+    <p id="myParagraph">
+      <br>
+      if the door status is FAILED, check/reset the esp8266 device
+    </p>
+    </div>
+  </div>
+ 
+
+
+<script>
+
+$('.check').on('click',function(){ 
+ 
+
+    var url = 'http://192.168.1.18/getstatus';
+
+    var data = {"esp-8266-in":"status"};
+
+    console.log(data);
+
+
+
+    Common.Ajax('POST', url, data, function (result) {
+       console.log(result.output);
+
+       //console.log("after result");
+        $('#res').html(result.output);
+        //$('#cand').append('<div class="name">data[i].name</>');
+        $('#myParagraph').html(result.output);
+        //$('#res').text(esult); 
+        if ( result.output === 'CLOSED') { 
+            $('#garagestatus').css('background', '#008000');
+            $('#garagestatus').text(result.output);
+        }
+        if ( result.output === 'OPEN') { 
+            $('#garagestatus').css('background', '#ff2c2c');
+            $('#garagestatus').text(result.output);
+        }
+        if ( result.output === 'FAILED') { 
+            $('#garagestatus').css('background', '#000000');
+            $('#garagestatus').text(result.output);
+        }
+        if ( result.output === 'PARTIAL') { 
+            $('#garagestatus').css('background', '#000000');
+            $('#garagestatus').text(result.output);
+        }
+        if ( result.output === 'ERROR') { 
+            $('#garagestatus').css('background', '#000000');
+            $('#garagestatus').text(result.output);
+        }
+
+    }, function (xhr, ajaxOptions, thrownError) {
+     console.log("Error rrrrr");
+
+    });
+
+});
+
+</script>
+<script>
+
+
+$('.pressgarage').on('click',function(){ 
+ 
+
+ var url = 'http://192.168.1.18/getstatus';
+
+ var data = {"esp-8266-in":"press"};
+
+ console.log(data);
+
+ Common.Ajax('POST', url, data, function (result) {
+    console.log(result.output);
+
+     $('#res').html(result.output);
+
+     $('#myParagraph').html(result.output);
+     //$('#res').text(esult); 
+     if ( result.output === 'CLOSED') { 
+         $('#garagestatus').css('background', '#008000');
+         $('#garagestatus').text(result.output);
+     }
+     if ( result.output === 'OPEN') { 
+         $('#garagestatus').css('background', '#ff2c2c');
+         $('#garagestatus').text(result.output);
+     }
+     if ( result.output === 'FAILED') { 
+         $('#garagestatus').css('background', '#000000');
+         $('#garagestatus').text(result.output);
+     }
+     if ( result.output === 'PARTIAL') { 
+         $('#garagestatus').css('background', '#000000');
+         $('#garagestatus').text(result.output);
+     }
+     if ( result.output === 'ERROR') { 
+         $('#garagestatus').css('background', '#000000');
+         $('#garagestatus').text(result.output);
+     }
+    
+
+ }, function (xhr, ajaxOptions, thrownError) {
+  console.log("Error rrrrr");
+
+ });
+
+});
+
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
